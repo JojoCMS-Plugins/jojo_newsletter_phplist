@@ -1,0 +1,54 @@
+div.contact-form label {
+  float: left;
+  width: 150px;
+  display: block;
+  text-align: right;
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
+
+div.contact-form input, div.contact-form select, div.contact-form textarea {
+  float: left;
+  margin-bottom: 3px;
+}
+
+div.contact-form br {
+  clear: left;
+  margin-bottom: 3px;
+}
+
+div.form-field {
+  float: left;
+  margin-bottom: 3px;
+  width: 300px;
+}
+
+div.form-field input {
+  float: none;
+}
+
+div.form-field-description {
+  float: left;
+  margin-bottom: 3px;
+  width: 300px;
+  clear: both;
+  margin-left: 155px;
+  font-size: 0.8em;
+  line-height: 110%;
+}
+
+div.form-field label {
+  float: none;
+  width: auto;
+  display: inline;
+  text-align: left;
+  margin-left: 5px;
+}
+
+div#event-log table{
+}
+
+div#event-log table td{
+padding-right:50px;
+text-align:center;
+}
