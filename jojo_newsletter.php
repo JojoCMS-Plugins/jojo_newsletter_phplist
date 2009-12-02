@@ -69,6 +69,7 @@ class Jojo_Plugin_Jojo_Newsletter
 
         /* Add all the images to the database */
         $result['subject']  = $newsletter['name'];
+        $result['date']  = $newsletter['date'];
         $result['template'] = $templateid;
         $result['content']  = $smarty->fetch('jojo_newsletter_content.tpl');
         $result['sender'] = ($newsletter['sender']) ? $newsletter['sender'] : Jojo::getOption('phplist_fromaddress');

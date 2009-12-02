@@ -37,8 +37,4 @@ class Jojo_Field_newsletter_send_now extends Jojo_Field
     {
     }
 
-    function aftersave($table)
-    {
-        return true;
-    }
 }

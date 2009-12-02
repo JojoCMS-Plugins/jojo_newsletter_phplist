@@ -5,7 +5,6 @@
 {if $content}{$content}{/if}
 
 <form name="contactform" method="post" action="{$posturl}" onsubmit="return checkmenewsletter()" class="contact-form">
-<div>
     <p class="note">Required fields are marked *</p>
 {foreach from=$fields key=k item=f }
     {assign var=x value=`$k-1`}
@@ -47,6 +46,5 @@
 {/if}
 
     <label>&nbsp;</label><input type="submit" name="submit" value="Submit" class="button" onmouseover="this.className='button buttonrollover';" onmouseout="this.className='button'" />
-</div>
 <br class="clear" />
 </form>

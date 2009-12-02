@@ -1,4 +1,4 @@
-div.contact-form label {
+form.contact-form label {
   float: left;
   width: 150px;
   display: block;
@@ -7,27 +7,27 @@ div.contact-form label {
   margin-bottom: 3px;
 }
 
-div.contact-form input, div.contact-form select, div.contact-form textarea {
+form.contact-form input, form.contact-form select, form.contact-form textarea {
   float: left;
   margin-bottom: 3px;
 }
 
-div.contact-form br {
+form.contact-form br {
   clear: left;
   margin-bottom: 3px;
 }
 
-div.form-field {
+form.contact-form div.form-field {
   float: left;
   margin-bottom: 3px;
   width: 300px;
 }
 
-div.form-field input {
+form.contact-form div.form-field input {
   float: none;
 }
 
-div.form-field-description {
+form.contact-form div.form-field-description {
   float: left;
   margin-bottom: 3px;
   width: 300px;
@@ -37,7 +37,7 @@ div.form-field-description {
   line-height: 110%;
 }
 
-div.form-field label {
+form.contact-form div.form-field label {
   float: none;
   width: auto;
   display: inline;
@@ -45,8 +45,6 @@ div.form-field label {
   margin-left: 5px;
 }
 
-div#event-log table{
-}
 
 div#event-log table td{
 padding-right:50px;

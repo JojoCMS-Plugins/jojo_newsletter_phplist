@@ -37,8 +37,4 @@ class Jojo_Field_newsletter_preview extends Jojo_Field
     {
     }
 
-    function aftersave($table)
-    {
-        return true;
-    }
 }

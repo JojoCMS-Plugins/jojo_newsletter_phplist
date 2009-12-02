@@ -57,8 +57,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         }
 
         $tablename = $this->cattable;
-        $rows = Jojo::selectQuery("SELECT * FROM {tabledata} WHERE td_name = ? LIMIT 1", $tablename);
-        $tableoptions = $rows[0];
+        $tableoptions = Jojo::selectRow("SELECT * FROM {tabledata} WHERE td_name = ?", $tablename);
 
         $idfield        = $tableoptions['td_primarykey'];
         $displayfield   = Jojo::either($tableoptions['td_displayfield'], $tableoptions['td_primarykey']);
@@ -87,19 +86,16 @@ class Jojo_Field_many2manyordered extends Jojo_Field
                     ' display';
         $records = Jojo::selectQuery($query);
 
-        $i = 1;
-        foreach ($records as $record) {
+        foreach ($records as $i=>$record) {
             $options[$i]['name']        = $record['display'];
             $options[$i]['value']       = $record['id'];
             $options[$i]['parent']      = $record['parent'];
             $this->options[$i]['group'] = isset($record['group1']) ? $record['group1'] : '';
-            $i++;
         }
 
         $tree = new hktree('tree');
 
         /* loop through each option and display */
-        $n = count($options);
         foreach ($options as $o) {
             $isselected = isset($selections[$o['value']]) ? ' checked="checked"' : '';
             $position   = isset($selections[$o['value']]) ? $selections[$o['value']] : '';
@@ -112,14 +108,11 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         return $output;
     }
 
-
-
     function setvalue($newvalue)
     {
-
     }
 
-    function afterSave($table)
+    function afterSave()
     {
         $selected = array();
         if (!$this->table->getRecordID()) {
@@ -131,7 +124,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
             if (substr($k, -6, 6) == '_order') {
                 continue;
             }
-            if (strpos($k, 'fm_' . $this->fd_field) === 0) {
+            if (strpos($k, 'fm_' . $this->fd_field.'_') === 0) {
                 $selected[$v] = Jojo::getFormData('fm_' . $this->fd_field . '_' . $v . '_order');
             }
         }

@@ -47,18 +47,6 @@ $fields[$f]['required'] = false;
 $fields[$f]['validation'] = '';
 $fields[$f]['type'] = 'textarea';
 $fields[$f]['rows'] = '5';
-$fields[$f]['cols'] = '40';
+$fields[$f]['cols'] = '29';
 $fields[$f]['value'] = '';
 $fields[$f]['description'] = '';
-
-/*
-++$f;
-$fields[$f]['field'] = 'Phone';
-$fields[$f]['display'] = 'Phone';
-$fields[$f]['required'] = false;
-$fields[$f]['validation'] = '';
-$fields[$f]['type'] = 'text';
-$fields[$f]['size'] = 20;
-$fields[$f]['value'] = '';
-$fields[$f]['description'] = '';
-*/
