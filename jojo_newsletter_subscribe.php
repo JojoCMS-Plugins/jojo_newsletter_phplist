@@ -213,7 +213,7 @@ class Jojo_Plugin_Jojo_Newsletter_Subscribe extends JOJO_Plugin
                 $smarty->assign('message', Jojo::either($successMessage, 'You are now subscribed to ' . $newlettername ));
 
                 /* send a copy to the webmaster */
-                if (Jojo::getOption('phplist_notifications_webmaster', 'yes') == 'yes' AND $to_email <> _WEBMASTERADDRESS) {
+                if (Jojo::getOption('phplist_notifications_webmaster', 'yes') == 'yes' AND $to_email  !=  _WEBMASTERADDRESS) {
                     Jojo::simpleMail(_WEBMASTERNAME, _WEBMASTERADDRESS, $subject, $message, $from_name, $from_email);
                 }
 

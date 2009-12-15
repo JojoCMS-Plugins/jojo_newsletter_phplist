@@ -128,7 +128,7 @@ class Jojo_Plugin_Jojo_Newsletter_Unsubscribe extends JOJO_Plugin
                 $smarty->assign('message', 'You are now unsubscribed from the ' . Jojo::getOption('sitetitle') . ' Newsletter.');
 
               /* send a copy to the webmaster */
-                if (Jojo::getOption('phplist_notifications_webmaster', 'yes') == 'yes' AND $to_email <> _WEBMASTERADDRESS) {
+                if (Jojo::getOption('phplist_notifications_webmaster', 'yes') == 'yes' AND $to_email != _WEBMASTERADDRESS) {
                     Jojo::simpleMail(_WEBMASTERNAME, _WEBMASTERADDRESS, $subject, $message, $from_name, $from_email);
                 }
                 return true;
