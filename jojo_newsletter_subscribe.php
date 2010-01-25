@@ -220,7 +220,7 @@ class Jojo_Plugin_Jojo_Newsletter_Subscribe extends JOJO_Plugin
                 /* send a copy to the subscriber */
                 if (Jojo::getOption('phplist_thankyou', 'yes') == 'yes') {
                   $subject  = 'Subscription to ' . $newlettername;
-                  Jojo::simpleMail($from_name, $from_email, $subject, $messagesubscriber, $to, $to);
+                  Jojo::simpleMail($from_name, $from_email, $subject, $messagesubscriber, $from_name, $from_email);
                 }
                 return true;
 
