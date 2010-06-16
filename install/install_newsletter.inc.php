@@ -11,6 +11,8 @@ $query = "CREATE TABLE {newsletter} (
   `sentdate` bigint(20) NOT NULL,
   `intro` text NOT NULL,
   `outro` text NOT NULL,
+  `intro_code` text NOT NULL,
+  `outro_code` text NOT NULL,
   `link` enum('yes','no') NOT NULL default 'yes',
   `preview` tinyint(4) NOT NULL,
   `send` tinyint(4) NOT NULL,

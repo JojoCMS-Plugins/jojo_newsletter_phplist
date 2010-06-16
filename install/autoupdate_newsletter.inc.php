@@ -55,7 +55,7 @@ $default_fd['newsletter']['issue_number'] = array(
 
 $default_fd['newsletter']['intro'] = array(
         'fd_name' => "Introduction",
-        'fd_type' => "textarea",
+        'fd_type' => "hidden",
         'fd_size' => "0",
         'fd_rows' => "6",
         'fd_cols' => "40",
@@ -65,11 +65,29 @@ $default_fd['newsletter']['intro'] = array(
 
 $default_fd['newsletter']['outro'] = array(
         'fd_name' => "Outro",
-        'fd_type' => "textarea",
+        'fd_type' => "hidden",
         'fd_size' => "0",
         'fd_rows' => "6",
         'fd_cols' => "40",
         'fd_order' => "3",
+        'fd_tabname' => "1. Newsletter",
+    );
+
+// Intro Field
+$default_fd['newsletter']['intro_code'] = array(
+        'fd_name' => "Intro",
+        'fd_type' => "texteditor",
+        'fd_options' => "intro",
+        'fd_order' => "10",
+        'fd_tabname' => "1. Newsletter",
+    );
+
+// Outro Field
+$default_fd['newsletter']['outro_code'] = array(
+        'fd_name' => "Outro",
+        'fd_type' => "texteditor",
+        'fd_options' => "outro",
+        'fd_order' => "11",
         'fd_tabname' => "1. Newsletter",
     );
 

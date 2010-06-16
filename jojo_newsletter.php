@@ -36,6 +36,9 @@ class Jojo_Plugin_Jojo_Newsletter
         }
         
         $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');
+        if ($newsletter['intro_code']) {  
+            $smarty->assign('htmlintro', true);
+        }
         $smarty->assign('newsletter', $newsletter);
 
         /* Get the templateid */
