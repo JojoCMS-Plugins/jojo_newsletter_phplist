@@ -60,7 +60,7 @@ $fields[$f]['required'] = true;
 $fields[$f]['validation'] = 'email';
 $fields[$f]['type'] = 'text';
 
-$lists = Jojo::selectAssoc("SELECT id as id2, name, id from {phplist_list} WHERE active = 1");
+$lists = Jojo::selectAssoc("SELECT id as id2, name, id from {phplist_list} WHERE active = 1 and name <> 'newsletter previewer' && name <> 'test'");
 
 if(count($lists) > 1){
   ++$f;
