@@ -24,7 +24,7 @@ $query = "CREATE VIEW {phplist_user_user} AS select
 
 /* Remove table if it exists */
 if (Jojo::tableExists($table)) {
-    Jojo::structureQuery('DROP TABLE ' . $table);
+    Jojo::structureQuery('DROP TABLE {' . $table . '}');
 }
 
 /* Check view exists */
