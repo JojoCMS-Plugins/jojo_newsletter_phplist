@@ -34,7 +34,7 @@ if (!count($data)) {
 $data = Jojo::selectRow("SELECT pageid FROM {page} WHERE pg_url='admin/newsletters'");
 if (!$data) {
     echo "Adding <b>Newsletters</b> Page to Admin menu<br />";
-    $_ADMIN_NEWSLETTER_ID = Jojo::insertQuery("INSERT INTO {page} SET pg_title='Edit Newsletters', pg_link='', pg_url='admin/newsletters', pg_parent = ?, pg_order = 2", array($_ADMIN_ROOT_ID));
+    $_ADMIN_NEWSLETTER_ID = Jojo::insertQuery("INSERT INTO {page} SET pg_title='Edit Newsletters', pg_link='', pg_url='admin/newsletters', pg_parent = ?, pg_order = 2, pg_breadcrumbnav='no', pg_footernav='no', pg_sitemapnav='no', pg_xmlsitemapnav='no'", array($_ADMIN_ROOT_ID));
 } else {
     $_ADMIN_NEWSLETTER_ID = $data['pageid'];
 }
@@ -64,12 +64,12 @@ if (!count($data)) {
 $data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_url='admin/newsletterstats'");
 if (!count($data)) {
     echo "Adding <b>Newsletter Statistics</b> Page to Admin menu<br />";;
-    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Newsletter Statistics', pg_link='jojo_plugin_jojo_admin_newsletter_stats', pg_url='admin/newsletterstats', pg_parent=?, pg_status='active', pg_order='4'", $_ADMIN_NEWSLETTER_ID);
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Newsletter Statistics', pg_link='jojo_plugin_jojo_admin_newsletter_stats', pg_url='admin/newsletterstats', pg_parent=?, pg_status='active', pg_order='4', pg_breadcrumbnav='no', pg_footernav='no', pg_sitemapnav='no', pg_xmlsitemapnav='no'", $_ADMIN_NEWSLETTER_ID);
 }
 
 /* add more newsletter statistics page */
 $data = Jojo::selectQuery("SELECT pageid FROM {page} WHERE pg_url='admin/more-newsletter-stats'");
 if (!count($data)) {
     echo "Adding <b>More Newsletter Statistics</b> Page to Admin menu<br />";
-    Jojo::insertQuery("INSERT INTO {page} SET pg_title='More Newsletter Statistics', pg_link='jojo_plugin_jojo_admin_newsletter_statistics', pg_url='admin/more-newsletter-stats', pg_status='active', pg_order='4',pg_parent=?", $_ADMIN_NEWSLETTER_ID);
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='More Newsletter Statistics', pg_link='jojo_plugin_jojo_admin_newsletter_statistics', pg_url='admin/more-newsletter-stats', pg_status='active', pg_order='4',pg_parent=?, pg_breadcrumbnav='no', pg_footernav='no', pg_sitemapnav='no', pg_xmlsitemapnav='no'", $_ADMIN_NEWSLETTER_ID);
 }
