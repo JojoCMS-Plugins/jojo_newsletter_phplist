@@ -31,14 +31,12 @@ class Jojo_Plugin_Jojo_Newsletter
         if (!isset($newsletter)) {
             return false;
         }
-        if ($newsletter['template'] != 3 ) {
-            $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
-        }
-        
+        $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
+        $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
+        $smarty->assign('htmlintro', true);
         $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');
-        if ($newsletter['intro_code']) {  
-            $smarty->assign('htmlintro', true);
-        }
+        $newsletter['outro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['outro']); 
+
         $smarty->assign('newsletter', $newsletter);
 
         /* Get the templateid */
@@ -52,22 +50,13 @@ class Jojo_Plugin_Jojo_Newsletter
             $smarty->assign('bannerimage', $filename);
         }
 
-        /* Get all the articles for this newsletter */
-        $articles = Jojo::selectQuery('SELECT a.* FROM {article} a, {newsletter_article} n WHERE a.articleid = n.articleid AND n.newsletterid = ? ORDER BY n.order', $id);
-
-        /* Add the content of the articles to the email content */
-        foreach($articles as $k => $article) {
-            if ( Jojo::getOption('phplist_includeimages', 'yes') == 'yes' && $article['ar_image']) {
-                /* Add the image */
-                $articles[$k]['ar_image'] = Jojo_Plugin_Jojo_Newsletter::addTemplateImage($templateid, _SITEURL . '/images/' . Jojo::getOption('phplist_imagesize', 'v25000') . '/articles/' . rawurlencode($article['ar_image']));
-            }
-            $articles[$k]['ar_title'] = mb_convert_encoding($articles[$k]['ar_title'], 'HTML-ENTITIES', 'UTF-8');
-            $articles[$k]['ar_url'] = _SITEURL .'/'. Jojo_Plugin_Jojo_article::getArticleUrl($article['articleid']);
-            $articles[$k]['ar_body'] = mb_convert_encoding(strip_tags($articles[$k]['ar_body']), 'HTML-ENTITIES', 'UTF-8');
-
-
-        }
-        $smarty->assign('articles', $articles);
+        $contentarray = array();
+        /* Get results from plugins */
+        $contentarray = Jojo::applyFilter('jojo_newslettercontent', $contentarray, $id);
+        $smarty->assign('contentarray', $contentarray);
+        
+       /* Allow plugins to add anything else they need to */
+        Jojo::runHook('assembleNewsletter', array('templateid' => $templateid, 'newsletter' => $newsletter));
 
 
         /* Add all the images to the database */

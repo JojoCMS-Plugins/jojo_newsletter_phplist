@@ -19,6 +19,7 @@ $default_td['newsletter'] = array(
         'td_primarykey' => "id",
         'td_displayfield' => "name",
         'td_deleteoption' => "yes",
+        'td_orderbyfields' => "id DESC",
         'td_menutype' => "list",
         'td_help' => "Newsletters are managed from here.  The system will comfortably take many hundreds of newsletters.",
         'td_defaultpermissions' => "everyone.show=1\neveryone.view=1\neveryone.edit=1\neveryone.add=1\neveryone.delete=1\nadmin.show=1\nadmin.view=1\nadmin.edit=1\nadmin.add=1\nadmin.delete=1\nnotloggedin.show=0\nnotloggedin.view=0\nnotloggedin.edit=0\nnotloggedin.add=0\nnotloggedin.delete=0\nregistered.show=1\nregistered.view=1\nregistered.edit=1\nregistered.add=1\nregistered.delete=1\nsysinstall.show=1\nsysinstall.view=1\nsysinstall.edit=1\nsysinstall.add=1\nsysinstall.delete=1\n",

@@ -102,7 +102,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
             $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="3" style="width:35px;" />&nbsp;<label><input type="checkbox" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
             $tree->addNode($o['value'], $o['parent'], $item);
         }
-        $output = '<strong>Articles to include:</strong><br/><br/><ul style="list-style-type: circle;"><li><span style="width:35px;">Position</span></li></ul>';
+        $output = '<ul style="list-style-type: circle;"><li><span style="width:35px;">Position</span></li></ul>';
         $output .= $tree->printout_plain();
 
         return $output;
