@@ -30,6 +30,13 @@ if (!count($data)) {
     Jojo::insertQuery("INSERT INTO {page} SET pg_title='Unsubscribe From Newsletter', pg_link='Jojo_Plugin_Jojo_Newsletter_Unsubscribe', pg_url='unsubscribe'");
 }
 
+/* add newsletter viewing page */
+$data = Jojo::selectRow("SELECT pageid FROM {page} WHERE pg_link='jojo_plugin_jojo_newsletter'");
+if (!count($data)) {
+    echo "Adding <b>Newsletter Online</b> Page to menu<br />";
+    Jojo::insertQuery("INSERT INTO {page} SET pg_title='Newsletter', pg_link='jojo_plugin_jojo_newsletter', pg_url='newsletter', pg_status='hidden'");
+}
+
 /* Add Edit Newsletter Page */
 $data = Jojo::selectRow("SELECT pageid FROM {page} WHERE pg_url='admin/newsletters'");
 if (!$data) {
