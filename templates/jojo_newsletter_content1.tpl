@@ -1,6 +1,8 @@
+{if !$online}
 <html>
 <body>
 <div style="text-align:center; padding:2px;padding-top:10px;padding-bottom:10px;">
+{/if}
 <table width="600px">
 {if $bannerimage}
 <tr>
@@ -37,6 +39,7 @@
 {if $htmlintro && $newsletter.outro}{str_replace('<p>', '<p style="font-family:verdana; font-size:11px;color:#636363;">', $newsletter.outro)}
 {elseif $newsletter.outro}<p style="font-family:verdana; font-size:11px;color:#636363;">{$newsletter.outro}</p>
 {/if}
+{if !$online}
 <p style="font-family:verdana; font-size:10px;color:#636363;">The Unsolicited Electronic Messages Act 2007 came into effect on 5 September 2007 and I need your permission to send you emails. If you no longer wish to receive these emails, please click on this <a href="[UNSUBSCRIBEURL]"style="text-decoration:none;">unsubscribe link</a>.</p>
 <p style="font-family:verdana; font-size:10px;color:#636363;">All future correspondence will have the option to unsubscribe should you wish to do so. Thanks for allowing this newsletter to be emailed.</p>
 </tr>
@@ -44,3 +47,4 @@
 </div>[USERTRACK] 
 
 <body></html>
+{/if}
