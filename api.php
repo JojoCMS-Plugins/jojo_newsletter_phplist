@@ -22,11 +22,14 @@ $_provides['fieldTypes'] = array(
         'newsletter_send_now' => 'Send newsletter'
 );
 
-
 $_provides['pluginClasses'] = array(
+        'Jojo_Plugin_Jojo_Newsletter' => 'Newsletter View',
         'Jojo_Plugin_newsletter_subscription' => 'Newsletter Subscriber',
         'Jojo_Plugin_newsletter_unsubscriber' => 'Newsletter Unsubscriber'
         );
+
+/* Register URI handlers */
+Jojo::registerURI(null, 'jojo_plugin_jojo_newsletter', 'isUrl');
 
 $_options[] = array(
     'id'        => 'phplist_admin',
