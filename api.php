@@ -177,6 +177,29 @@ $_options[] = array(
   'plugin'    => 'jojo_newsletter_phplist'
 );
 
+$_options[] = array(
+    'id'        => 'newslettercss',
+    'category'  => 'Newsletter',
+    'label'     => 'CSS styles',
+    'description' => 'newline separated css styles in the format tag=style',
+    'type'      => 'textarea',
+    'default'   => "",
+    'options'   => '',
+    'plugin'    => 'jojo_newsletter_phplist'
+
+);
+
+$_options[] = array(
+  'id'        => 'onlinenews_display',
+  'category'  => 'Newsletter',
+  'label'     => 'Display online version as',
+  'description' => 'Show the newsletter in the content area of the site like any other page content (inline) or as a standalone page as it appears in the email',
+  'type'        => 'radio',
+  'default'     => 'inline',
+  'options'     => 'inline,standalone',
+  'plugin'    => 'jojo_newsletter_phplist'
+);
+
 
 $prefix = JOJO_Plugin_Jojo_Admin_Newsletter_Statistics::_getPrefix();
 Jojo::registerURI("$prefix/[id:integer]/[.*]", 'Jojo_Plugin_Jojo_admin_newsletter_statistics'); // "morenewsletterstatistics/123/name-of-quote/"

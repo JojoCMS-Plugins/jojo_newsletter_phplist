@@ -21,7 +21,7 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
     /**
      * Get all the bits of the news letter and put them all together
      */
-    public static function assembleNewsletter($id, $online=false)
+    public static function assembleNewsletter($id, $online=false, $inline=false)
     {
         global $smarty;
         $result = array();
@@ -31,14 +31,26 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         if (!isset($newsletter)) {
             return false;
         }
-        $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
+        $css = Jojo::getOption('newslettercss', '');
+        $newscss = array();
+        if ($css) {
+            $styles = explode("\n", $css);
+            foreach ($styles as $k => $s) {
+                $style = explode('=', $s);
+                $newscss[$k]['tag'] = $style[0];
+                $newscss[$k]['style'] = $style[1];
+                $smarty->assign($newscss[$k]['tag'] .'css', $newscss[$k]['style']);
+            }
+        }
+        $newsletter['intro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['intro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
         $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
         $smarty->assign('htmlintro', true);
-        $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');
+        $newsletter['outro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['outro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
         $newsletter['outro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['outro']); 
 
         $smarty->assign('newsletter', $newsletter);
         $smarty->assign('online', $online);
+        $smarty->assign('inline', $inline);
 
         /* Get the templateid */
         $templateid = $newsletter['template'];
@@ -46,9 +58,11 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         if (Jojo::tableExists('bannerimage') && $newsletter['header_image']) {
             /* Get the image */
             $newsletter_header_image = Jojo::selectRow('SELECT bi_image FROM {bannerimage} WHERE bannerimageid = ?', $newsletter['header_image']);
-            $imagelocation = _SITEURL . '/images/394x213/bannerimages/' . rawurlencode($newsletter_header_image['bi_image']);
+            $bannerimage = rawurlencode($newsletter_header_image['bi_image']);
+            $imagelocation = _SITEURL . '/images/394x213/bannerimages/' . $bannerimage;
             $filename = self::addTemplateImage($templateid, $imagelocation);
             $smarty->assign('bannerimage', $filename);
+            $smarty->assign('bannerimagefile', $bannerimage);
         }
 
         $contentarray = array();
@@ -83,18 +97,19 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         $content = array();
 
         /* Do we have an id? */
-        $id = Jojo::getFormData('id',        0);
-        
+        $id = Jojo::getFormData('id', 0);
         if ($id) {
-            $newsletter = self::assembleNewsletter($id, $online=true);
+            $inline = (boolean)(Jojo::getOption('onlinenews_display', 'inline')=='inline');
+            $newsletter = self::assembleNewsletter($id, $online=true, $inline);
             $content['content'] = $newsletter['content'];
             $content['title'] = $content['seotitle'] = $newsletter['subject'];
-            
-            header('Content-Type: text/html');
-            header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-            echo $newsletter;
-            exit;
+            if (!$inline) {
+                header('Content-Type: text/html');
+                header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+                header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+                echo $newsletter['content'];
+                exit;
+            }
 
         } else {
             $newsletters = Jojo::selectQuery('SELECT * FROM {newsletter} ORDER BY date DESC');

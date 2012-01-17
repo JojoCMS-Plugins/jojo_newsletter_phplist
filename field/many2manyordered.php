@@ -83,7 +83,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
                     ' ORDER BY '. Jojo::onlyIf($group1field,' '.$group1field.', ').
                      Jojo::onlyIf($orderbyfield,' '.$orderbyfield.', ').
                      Jojo::onlyIf($displayfield,' '.$displayfield.', ').
-                    ' display';
+                    ' display LIMIT 250';
         $records = Jojo::selectQuery($query);
 
         foreach ($records as $i=>$record) {
