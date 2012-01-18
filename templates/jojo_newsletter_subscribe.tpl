@@ -5,11 +5,11 @@
 {if $content}{$content}{/if}
 
 <form name="contactform" method="post" action="{$posturl}" onsubmit="return checkmenewsletter()" class="contact-form">
-    <p class="note">Required fields are marked *</p>
+    <p class="note">##Required fields are marked## *</p>
 {foreach from=$fields key=k item=f }
     {assign var=x value=`$k-1`}
     {if $f.fieldset!='' && $f.fieldset!=$fields[$x].fieldset}<fieldset><legend>{$f.fieldset}</legend>{/if}
-    {if $f.type!='hidden'}<label for="form_{$f.field}">{if $f.display!='' }{$f.display}:{/if}</label>{/if}
+    {if $f.type!='hidden'}<label for="form_{$f.field}">{if $f.display!='' }##{$f.display}##:{/if}</label>{/if}
     {if $f.type == 'textarea'}
     <textarea class="textarea" rows="{$f.rows|default:'10'}" cols="{$f.cols|default:'29'}" name="form_{$f.field}" id="form_{$f.field}">{$f.value}</textarea>
 
@@ -45,6 +45,6 @@
     </div>
 {/if}
 
-    <label>&nbsp;</label><input type="submit" name="submit" value="Submit" class="button" onmouseover="this.className='button buttonrollover';" onmouseout="this.className='button'" />
+    <label>&nbsp;</label><input type="submit" name="submit" value="##Submit##" class="button" onmouseover="this.className='button buttonrollover';" onmouseout="this.className='button'" />
 <br class="clear" />
 </form>
