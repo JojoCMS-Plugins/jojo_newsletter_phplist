@@ -39,12 +39,14 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
                 $style = explode('=', $s);
                 $newscss[$k]['tag'] = $style[0];
                 $newscss[$k]['style'] = $style[1];
-                $smarty->assign($newscss[$k]['tag'] .'css', $newscss[$k]['style']);
+                $smarty->assign(str_replace(array(' ','=','"'), '', $newscss[$k]['tag']) .'css', $newscss[$k]['style']);
             }
         }
+        $newsletter['intro'] = Jojo::relative2absolute($newsletter['intro'], _SITEURL);
         $newsletter['intro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['intro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
         $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
         $smarty->assign('htmlintro', true);
+        $newsletter['outro'] = Jojo::relative2absolute($newsletter['outro'], _SITEURL);
         $newsletter['outro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['outro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
         $newsletter['outro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['outro']); 
 
