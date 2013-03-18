@@ -19,8 +19,11 @@ if (!$content) {
 $templateid = $content['template'];
 
 /* Variables required to compose and send a message to a mailing list */
-$offset = date('Z') - (Jojo::getOption('servertimezone') * 60 *60);
-$test_date = date("Y-m-d H:i:s", (time() - $offset - 1));
+
+/* PHPList uses MYSQL's idea of the current time as a basis for all calculations (and it's not always the same as servertime) so get that rather than use a timestamp */
+$now = Jojo::selectRow("select @now := now()");
+$now = array_values($now);
+$now = ($now[0]);
 
 /* Insert the message into the database and prepare it for dispatch */
 $messageid = jojo::insertQuery("INSERT INTO {phplist_message} SET
@@ -41,24 +44,23 @@ $messageid = jojo::insertQuery("INSERT INTO {phplist_message} SET
                 sendstart          = ?,
                 template           = ?",
                 array($content['subject'], $content['sender'], $content['content'],
-                      $test_date, $test_date, $test_date, $test_date,
-                      $test_date, $content['template'])
+                      $now, 'NULL', 'NULL', 'NULL',
+                      $now, $content['template'])
     );
 
 /* Assigns the newly made message to the desired mailing list */
 foreach ($content['lists'] as $listid) {
-    jojo::insertQuery("INSERT INTO {phplist_listmessage} SET
+    Jojo::insertQuery("INSERT INTO {phplist_listmessage} SET
         messageid        = ?,
         listid            = ?,
         entered            = ?",
-        array($messageid, $listid,  $test_date)
+        array($messageid, $listid,  $now)
     );
 }
 
 /* Send the message, which was queued, from phplist.  So that commandline executions are possible, "root" was added as commandline_users in the config/config.php file. */
 putenv('USER=admin');
 echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue');
-echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue');
 
 /* Assign sent date to newsletter */
-jojo::updateQuery("UPDATE {newsletter} SET sentdate = ? WHERE id = ?", array(time(), $id));
+Jojo::updateQuery("UPDATE {newsletter} SET sentdate = ? WHERE id = ?", array(time(), $id));
