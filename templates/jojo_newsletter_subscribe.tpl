@@ -1,50 +1,38 @@
-{if $message}
-<div class="message">{$message}</div>
+{if $message}<div class="message">{$message}</div>
 {/if}
-
-{if $content}{$content}{/if}
-
-<form name="contactform" method="post" action="{$posturl}" onsubmit="return checkmenewsletter()" class="contact-form">
-    <p class="note">##Required fields are marked## *</p>
-{foreach from=$fields key=k item=f }
-    {assign var=x value=`$k-1`}
-    {if $f.fieldset!='' && $f.fieldset!=$fields[$x].fieldset}<fieldset><legend>{$f.fieldset}</legend>{/if}
-    {if $f.type!='hidden'}<label for="form_{$f.field}">{if $f.display!='' }##{$f.display}##:{/if}</label>{/if}
-    {if $f.type == 'textarea'}
-    <textarea class="textarea" rows="{$f.rows|default:'10'}" cols="{$f.cols|default:'29'}" name="form_{$f.field}" id="form_{$f.field}">{$f.value}</textarea>
-
-    {elseif $f.type == 'checkboxes'}
-    <div class="form-field">
-{foreach from=$f.options key=k item=fo }
-        <input type="checkbox" class="checkbox" name="form_{$f.field}[{$fo}]" id="form_{$f.field}_{$fo|replace:' ':'_'|replace:'$':''}" value="{$k}" /><label for="form_{$f.field}_{$fo}"> {$fo}</label><br />
-{/foreach}
-    </div>
-
-    {elseif $f.type=='select'}
-    <select name="form_{$f.field}" id="form_{$f.field}">
-          <option value="">Select</option>
-{foreach from=$f.options key=k item=so}
-          <option value="{$k}"{if $f.value == $so} selected="selected"{/if}>{$so}</option>
-{/foreach}
-    </select>
-    {else}
-    <input type="{$f.type}" class="{$f.type}" {if $f.size}size="{$f.size}"{/if} name="form_{$f.field}" id="form_{$f.field}" value="{if $f.value}{$f.value}{/if}" />
+{if $content}{$content}
+{/if}
+<form name="contactform" method="post" action="{$posturl}" class="contact-form no-ajax">
+    {foreach from=$fields key=k item=f }{assign var=x value=`$k-1`}
+    {if $f.fieldset!='' && $f.fieldset!=$fields[$x].fieldset}<fieldset>
+        <legend>{$f.fieldset}</legend>
     {/if}
-    {if $f.required && $f.type!='hidden'}&nbsp;*{/if}
-    {if $f.description}<div class="form-field-description">{$f.description}</div>{/if}<br />
+        <div class="form-fieldset control-group">
+            {if $f.type!='hidden'}<label for="form_{$f.field}" class="control-label">{if $f.display!='' }##{$f.display}##:{/if}{if $f.required && $f.type!='hidden'}<span class="required">*</span>{/if}</label>{/if}
+            {if $f.type == 'textarea'}<textarea class="textarea" rows="{$f.rows|default:'10'}" cols="{$f.cols|default:'29'}" name="form_{$f.field}" id="form_{$f.field}">{$f.value}</textarea>
+            {elseif $f.type == 'checkboxes'}<div class="form-field controls">
+                {foreach from=$f.options key=k item=fo }<label for="form_{$f.field}_{$fo}" class="checkbox"><input type="checkbox" name="form_{$f.field}[{$fo}]" id="form_{$f.field}_{$fo|replace:' ':'_'|replace:'$':''}" value="{$k}" />{$fo}</label><br />
+                {/foreach}
+            </div>
+            {elseif $f.type=='select'}<select name="form_{$f.field}" id="form_{$f.field}">
+                <option value="">Select</option>
+                {foreach from=$f.options key=k item=so}<option value="{$k}"{if $f.value == $so} selected="selected"{/if}>{$so}</option>
+                {/foreach}
+            </select>
+            {else}<input type="{$f.type}" class="{$f.type}" {if $f.size}size="{$f.size}"{/if} name="form_{$f.field}" id="form_{$f.field}" value="{if $f.value}{$f.value}{/if}" />
+            {/if}
+            {if $f.description}<div class="form-field-description">{$f.description}</div>{/if}
+        </div>
     {assign var=x value=`$k+1`}
     {if $f.fieldset!='' && $f.fieldset!=$fields[$x].fieldset}</fieldset>{/if}
-{/foreach}
+    {/foreach}
 
-{if $OPTIONS.contactcaptcha == 'yes'}
-    <div class="captcha">
+    {if $OPTIONS.contactcaptcha == 'yes'}<div class="captcha">
         <label for="CAPTCHA">Spam prevention:</label>
         <input type="text" class="text" size="8" name="CAPTCHA" id="CAPTCHA" value="" />&nbsp;*<br />
         <p class="note">Please enter the 3 letter code below. This helps us prevent spam. <em>Code is not case-sensitive</em></p>
         <img src="external/php-captcha/visual-captcha.php" width="200" height="60" alt="Visual CAPTCHA" /><br />
     </div>
-{/if}
-
-    <label>&nbsp;</label><input type="submit" name="submit" value="##Submit##" class="button" onmouseover="this.className='button buttonrollover';" onmouseout="this.className='button'" />
-<br class="clear" />
+    {/if}
+    <label class="control-label"></label><input type="submit" name="submit" value="##Submit##" class="button btn" onmouseover="this.className='button btn buttonrollover';" onmouseout="this.className='button btn'" />
 </form>
