@@ -190,6 +190,17 @@ $_options[] = array(
 );
 
 $_options[] = array(
+  'id'        => 'newslettercss_lists',
+  'category'  => 'Newsletter',
+  'label'     => 'Lists to bulleted table',
+  'description' => 'Convert ul/li lists into table-based layout with manual bullets and p tags for Outlook (requires Jojo 1.2.3+)',
+  'type'        => 'radio',
+  'default'     => 'no',
+  'options'     => 'yes,no',
+  'plugin'    => 'jojo_newsletter_phplist'
+);
+
+$_options[] = array(
   'id'        => 'onlinenews_display',
   'category'  => 'Newsletter',
   'label'     => 'Display online version as',

@@ -42,12 +42,24 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
                 $smarty->assign(str_replace(array(' ','=','"'), '', $newscss[$k]['tag']) .'css', $newscss[$k]['style']);
             }
         }
-        $newsletter['intro'] = Jojo::relative2absolute($newsletter['intro'], _SITEURL);
-        $newsletter['intro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['intro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
-        $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
         $smarty->assign('htmlintro', true);
+        // convert any relative urls to absolute
+        $newsletter['intro'] = Jojo::relative2absolute($newsletter['intro'], _SITEURL);
         $newsletter['outro'] = Jojo::relative2absolute($newsletter['outro'], _SITEURL);
-        $newsletter['outro'] = mb_convert_encoding(Jojo::inlineStyle($newsletter['outro'], $newscss), 'HTML-ENTITIES', 'UTF-8');
+        // convert lists into table-based layout with manual bullets and p tags for Outlook if option is enabled
+        // add inline styling to tags based on option css settings
+        if (Jojo::getOption('newslettercss_lists', 'no') == 'yes') {
+            $newsletter['intro'] = Jojo::inlineStyle($newsletter['intro'], $newscss, true);
+            $newsletter['outro'] = Jojo::inlineStyle($newsletter['outro'], $newscss, true);
+        } else {
+            $newsletter['intro'] = Jojo::inlineStyle($newsletter['intro'], $newscss);
+            $newsletter['outro'] = Jojo::inlineStyle($newsletter['outro'], $newscss);
+        } 
+        // convert text encoding to utf-8 for consistent foreign character display
+        $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
+        $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');
+        // convert htmlentities to unicode for more consistent display
+        $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
         $newsletter['outro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['outro']); 
 
         $smarty->assign('newsletter', $newsletter);
