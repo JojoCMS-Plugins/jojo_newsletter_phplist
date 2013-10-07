@@ -1,7 +1,7 @@
 {include file="admin/header.tpl"}
 <div id="event-log">
 
-<table >
+<table class="table">
     <tr>
       <td><h3>Newsletter</h3></td>
       <td><h3>Date Sent</h3></td>
@@ -11,18 +11,18 @@
 	  <td><h3>Details</h3></td>
     </tr>
 
-    {section name=e loop=$messageinfo}
+    {foreach from=$messageinfo item=e }
     <tr>
-      <td>{$messageinfo[e].subject}</td>
-      <td>{$messageinfo[e].sendstart|date_format:"%e %B %Y"}</td>
-      <td>{$messageinfo[e].processed}</td>
-	  <td>{$messageinfo[e].bouncecount}</td>
-	  <td>{$messageinfo[e].viewed}</td>
+      <td>{$e.subject}</td>
+      <td>{$e.sendstart|date_format:"%e %B %Y"}</td>
+      <td>{$e.processed}</td>
+	  <td>{$e.bouncecount}</td>
+	  <td>{$e.viewed}</td>
 	  <td>
-			<a href="admin/more-newsletter-stats/{$messageinfo[e].id}"> more... </a>
+			<a href="admin/more-newsletter-stats/{$e.id}"> more... </a>
      </td>
     </tr>
-    {/section}
+    {/foreach}
 
 </table>
 

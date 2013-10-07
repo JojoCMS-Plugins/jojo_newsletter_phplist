@@ -1,7 +1,7 @@
 {include file="admin/header.tpl"}
 <div id="event-log">
 
-<table >
+<table class="table">
     <tr>
       <td>{$message}</td>
     </tr>
