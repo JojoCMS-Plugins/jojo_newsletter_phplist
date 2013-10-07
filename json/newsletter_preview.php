@@ -82,6 +82,6 @@ Jojo::insertQuery("INSERT INTO {phplist_listmessage} SET
 
 /* Send the message, which was queued, from phplist.  So that commandline executions are possible, "root" was added as commandline_users in the config/config.php file. */
 putenv('USER=admin');
-echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue');
+echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue' . (Jojo::getOption('phplist_config', '') ? ' -c ' . Jojo::getOption('phplist_config') : ''));
 
 Jojo::deleteQuery('DELETE FROM {phplist_message} WHERE tofield =?', $email);
