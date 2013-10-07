@@ -50,7 +50,7 @@ foreach ($content['lists'] as $listid) {
 
 /* Send the message, which was queued, from phplist.  So that commandline executions are possible, "root" was added as commandline_users in the config/config.php file. */
 putenv('USER=admin');
-echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue');
+echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue' . (Jojo::getOption('phplist_config', '') ? ' -c ' . Jojo::getOption('phplist_config') : ''));
 
 /* Assign sent date to newsletter using local time, not server time */
 Jojo::updateQuery("UPDATE {newsletter} SET sentdate = ? WHERE id = ?", array(time(), $id));

@@ -42,6 +42,16 @@ $_options[] = array(
     'plugin'    => 'jojo_newsletter_phplist'
 );
 
+$_options[] = array(
+    'id'        => 'phplist_config',
+    'category'  => 'Newsletter',
+    'label'     => 'PHPList Config file Location',
+    'description' => 'Full path to php list\'s config.php eg /home/httpd/phplist/lists/config/config.php',
+    'type'      => 'text',
+    'default'   => '',
+    'options'   => '',
+    'plugin'    => 'jojo_newsletter_phplist'
+);
 
 $_options[] = array(
     'id'        => 'phplist_fromaddress',
