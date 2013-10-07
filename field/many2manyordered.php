@@ -94,6 +94,8 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         }
 
         $tree = new hktree('tree');
+        $tree->liststyle = 'none';
+        $tree->listclass = 'unstyled';
 
         /* loop through each option and display */
         foreach ($options as $o) {
@@ -102,7 +104,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
             $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="3" style="width:35px;display:inline-block;" />&nbsp;<label class="checkbox inline"><input type="checkbox" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
             $tree->addNode($o['value'], $o['parent'], $item);
         }
-        $output = '<ul><li><span style="width:35px;">Position</span></li></ul>';
+        $output = '<ul class="unstyled"><li><span style="width:35px;">Position</span></li></ul>';
         $output .= $tree->printout_plain();
 
         return $output;
