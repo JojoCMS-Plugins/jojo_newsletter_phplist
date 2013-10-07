@@ -4,7 +4,7 @@ $table = 'user';
 $query = "CREATE TABLE {user} (
   `userid` int(11) NOT NULL auto_increment,
   `us_login` varchar(100) NOT NULL default '',
-  `us_password` varchar(40) NOT NULL default '',
+  `us_password` varchar(255) NOT NULL default '',
   `us_lastsuccess` datetime NOT NULL default '0000-00-00 00:00:00',
   `us_lastfailure` datetime NOT NULL default '0000-00-00 00:00:00',
   `us_failures` int(11) NOT NULL default '0',

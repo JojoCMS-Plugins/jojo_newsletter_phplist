@@ -18,13 +18,6 @@ if (!$content) {
 /* Get the templateid */
 $templateid = $content['template'];
 
-/* Variables required to compose and send a message to a mailing list */
-
-/* PHPList uses MYSQL's idea of the current time as a basis for all calculations (and it's not always the same as servertime) so get that rather than use a timestamp */
-$now = Jojo::selectRow("select @now := now()");
-$now = array_values($now);
-$now = ($now[0]);
-
 /* Insert the message into the database and prepare it for dispatch */
 $messageid = jojo::insertQuery("INSERT INTO {phplist_message} SET
                 subject            = ?,
@@ -33,19 +26,16 @@ $messageid = jojo::insertQuery("INSERT INTO {phplist_message} SET
                 tofield            = '',
                 replyto            = '',
                 footer             = '',
-                entered            = ?,
-                embargo            = ?,
-                repeatuntil        = ?,
+                entered            = now(),
+                embargo            = '0000-00-00 00:00:00',
+                repeatuntil        = '0000-00-00 00:00:00',
                 status             = 'queued',
-                sent               = ?,
                 htmlformatted      = 1,
                 sendformat         = 'HTML',
                 ashtml             = 1,
-                sendstart          = ?,
+                sendstart          = now(),
                 template           = ?",
-                array($content['subject'], $content['sender'], $content['content'],
-                      $now, 'NULL', 'NULL', 'NULL',
-                      $now, $content['template'])
+                array($content['subject'], $content['sender'], $content['content'], $content['template'])
     );
 
 /* Assigns the newly made message to the desired mailing list */
@@ -53,8 +43,8 @@ foreach ($content['lists'] as $listid) {
     Jojo::insertQuery("INSERT INTO {phplist_listmessage} SET
         messageid        = ?,
         listid            = ?,
-        entered            = ?",
-        array($messageid, $listid,  $now)
+        entered            = now()",
+        array($messageid, $listid)
     );
 }
 
@@ -62,5 +52,5 @@ foreach ($content['lists'] as $listid) {
 putenv('USER=admin');
 echo system(Jojo::getOption('phplist_phplocation') . ' ' . Jojo::getOption('phplist_admin') . ' -pprocessqueue');
 
-/* Assign sent date to newsletter */
+/* Assign sent date to newsletter using local time, not server time */
 Jojo::updateQuery("UPDATE {newsletter} SET sentdate = ? WHERE id = ?", array(time(), $id));

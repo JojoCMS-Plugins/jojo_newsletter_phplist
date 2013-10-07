@@ -21,41 +21,31 @@ if (!$content) {
 /* Get the templateid */
 $templateid = $content['template'];
 
-/* Variables required to compose and send a message to a mailing list */
-
-/* PHPList uses MYSQL's idea of the current time as a basis for all calculations (and it's not always the same as servertime) so get that rather than use a timestamp */
-$now = Jojo::selectRow("select @now := now()");
-$now = array_values($now);
-$now = ($now[0]);
-
 /* Insert the message into the database and prepare it for dispatch */
 $messageid = jojo::insertQuery("INSERT INTO {phplist_message} SET
                 subject            = ?,
                 fromfield          = ?,
                 message            = ?,
-                tofield            = '',
+                tofield            = ?,
                 replyto            = '',
                 footer             = '',
-                entered            = ?,
-                embargo            = ?,
-                repeatuntil        = ?,
+                entered            = now(),
+                embargo            = '0000-00-00 00:00:00',
+                repeatuntil        = '0000-00-00 00:00:00',
                 status             = 'queued',
-                sent               = ?,
                 htmlformatted      = 1,
                 sendformat         = 'HTML',
                 ashtml             = 1,
-                sendstart          = ?,
+                sendstart          = now(),
                 template           = ?",
-                array($content['subject'], $content['sender'], $content['content'],
-                      $now, 'NULL', 'NULL', 'NULL',
-                      $now, $content['template'])
+                array($content['subject'], $content['sender'], $content['content'], $email, $content['template'])
     );
 
 /* Delete all existing newsletter previewer mailing lists*/
 jojo::deleteQuery("DELETE FROM {phplist_list} WHERE name = 'newsletter previewer'");
 
 /* Insert a preview mailing list group as a new mailing list group */
-jojo::insertQuery("INSERT INTO {phplist_list} SET name = 'newsletter previewer'");
+jojo::insertQuery("INSERT INTO {phplist_list} SET name = 'newsletter previewer', active = 1 ");
 $listid =  jojo::selectQuery("SELECT id FROM {phplist_list} WHERE name = 'newsletter previewer'");
 $listid = $listid[0]['id'];
 
@@ -78,17 +68,16 @@ if(!isset($user[0])) {
 /* Assign the preview recipient as a member of the created preview mailing list */
 jojo::insertQuery("INSERT INTO {phplist_listuser} SET
         userid      = ?,
-        listid      = ?,
-        entered     = ?",
-        array($userid, $listid, $test_date)
+        listid      = ?",
+        array($userid, $listid)
     );
 
 /* Assign the newly made message to the desired mailing list  */
 Jojo::insertQuery("INSERT INTO {phplist_listmessage} SET
         messageid   = ?,
         listid      = ?,
-        entered     = ?",
-        array($messageid, $listid, $test_date)
+        entered     = now()",
+        array($messageid, $listid)
     );
 
 /* Send the message, which was queued, from phplist.  So that commandline executions are possible, "root" was added as commandline_users in the config/config.php file. */
