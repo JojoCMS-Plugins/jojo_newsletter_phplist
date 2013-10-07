@@ -99,7 +99,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         foreach ($options as $o) {
             $isselected = isset($selections[$o['value']]) ? ' checked="checked"' : '';
             $position   = isset($selections[$o['value']]) ? $selections[$o['value']] : '';
-            $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="3" style="width:35px;display:inline-block;" />&nbsp;<label class="checkbox"><input type="checkbox inline" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
+            $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="3" style="width:35px;display:inline-block;" />&nbsp;<label class="checkbox inline"><input type="checkbox" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
             $tree->addNode($o['value'], $o['parent'], $item);
         }
         $output = '<ul><li><span style="width:35px;">Position</span></li></ul>';
