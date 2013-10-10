@@ -126,10 +126,10 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
             }
 
         } else {
-            $newsletters = Jojo::selectQuery('SELECT * FROM {newsletter} ORDER BY date DESC');
+            $newsletters = Jojo::selectQuery('SELECT * FROM {newsletter} WHERE sentdate > 0 ORDER BY sentdate DESC');
             foreach ($newsletters as &$i) {
-             $i['title']   = htmlspecialchars($i['name'], ENT_COMPAT, 'UTF-8', false);
-              $i['datefriendly'] = Jojo::formatTimestamp($i['date'], "medium");
+                $i['title']   = htmlspecialchars($i['name'], ENT_COMPAT, 'UTF-8', false);
+                $i['datefriendly'] = Jojo::formatTimestamp($i['sentdate'], "medium");
             }
             $smarty->assign('newsletters', $newsletters);
         
