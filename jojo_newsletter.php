@@ -31,12 +31,13 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         if (!isset($newsletter)) {
             return false;
         }
-        $css = Jojo::getOption('newslettercss', '');
+        $css = Jojo::getOption('css-email', '');
+        $tablelists = (boolean)(Jojo::getOption('newslettercss_lists', 'no') == 'yes');
         $newscss = array();
         if ($css) {
-            $styles = explode("\n", $css);
+            $styles = Jojo::ta2array($css);
             foreach ($styles as $k => $s) {
-                $style = explode('=', $s);
+                $style = explode('{', $s);
                 $newscss[$k]['tag'] = $style[0];
                 $newscss[$k]['style'] = $style[1];
                 $smarty->assign(str_replace(array(' ','=','"'), '', $newscss[$k]['tag']) .'css', $newscss[$k]['style']);
@@ -48,13 +49,9 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         $newsletter['outro'] = Jojo::relative2absolute($newsletter['outro'], _SITEURL);
         // convert lists into table-based layout with manual bullets and p tags for Outlook if option is enabled
         // add inline styling to tags based on option css settings
-        if (Jojo::getOption('newslettercss_lists', 'no') == 'yes') {
-            $newsletter['intro'] = Jojo::inlineStyle($newsletter['intro'], $newscss, true);
-            $newsletter['outro'] = Jojo::inlineStyle($newsletter['outro'], $newscss, true);
-        } else {
-            $newsletter['intro'] = Jojo::inlineStyle($newsletter['intro'], $newscss);
-            $newsletter['outro'] = Jojo::inlineStyle($newsletter['outro'], $newscss);
-        } 
+        $newsletter['intro'] = $newsletter['intro'] ? Jojo::inlineStyle($newsletter['intro'], $css, $tablelists) : '';
+        $newsletter['outro'] = $newsletter['outro'] ? Jojo::inlineStyle($newsletter['outro'], $css, $tablelists) : '';
+
         // convert text encoding to utf-8 for consistent foreign character display
         $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
         $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');

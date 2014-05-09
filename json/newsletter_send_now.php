@@ -7,8 +7,8 @@ if (!$page->perms->hasPerm($_USERGROUPS, 'view')) {
     exit;
 }
 
-$id = Util::getPost('id', 1);
-$email = Util::getPost('email');
+$id = Jojo::getPost('id', 1);
+$email = Jojo::getPost('email');
 
 $content = Jojo_Plugin_Jojo_Newsletter::assembleNewsletter($id);
 if (!$content) {

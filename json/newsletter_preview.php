@@ -7,8 +7,8 @@ if (!$page->perms->hasPerm($_USERGROUPS, 'view')) {
     exit;
 }
 
-$id = Util::getFormData('id');
-$email = Util::getFormData('email');
+$id = Jojo::getFormData('id');
+$email = Jojo::getFormData('email');
 if (!$id || !$email) {
     exit;
 }
