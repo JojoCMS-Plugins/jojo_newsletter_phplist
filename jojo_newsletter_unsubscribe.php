@@ -54,7 +54,7 @@ class Jojo_Plugin_Jojo_Newsletter_Unsubscribe extends JOJO_Plugin
                     $field['valuearr'][$f] = $f;
                 }
             } else {
-                $field['value'] = Util::getFormData('form_' . $field['field'], '');
+                $field['value'] = Jojo::getFormData('form_' . $field['field'], '');
             }
 
             /* check value is set on required fields */

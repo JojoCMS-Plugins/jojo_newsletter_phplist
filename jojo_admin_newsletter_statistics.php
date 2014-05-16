@@ -23,7 +23,7 @@ class jojo_plugin_jojo_admin_newsletter_statistics extends Jojo_Plugin
 	public function _getContent(){
 		global $smarty, $_USERGROUPS;
 		Jojo_Plugin_Admin::adminMenu();
-		$id = Util::getFormData('id', 0);
+		$id = Jojo::getFormData('id', 0);
 
 		/* generic overview  */
 		$content = jojo::selectQuery('SELECT subject, sendstart, processed, bouncecount, viewed FROM {phplist_message} where id = ?', $id);
@@ -99,7 +99,7 @@ class jojo_plugin_jojo_admin_newsletter_statistics extends Jojo_Plugin
 
 	function getCorrectUrl()
 	{
-		$id = Util::getFormData('id', 0);
+		$id = Jojo::getFormData('id', 0);
 		return parent::getCorrectUrl() . $id . '/';
 	}
 }
