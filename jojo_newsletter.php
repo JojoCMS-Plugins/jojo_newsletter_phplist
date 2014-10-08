@@ -39,7 +39,7 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
             foreach ($styles as $k => $s) {
                 $style = explode('{', $s);
                 $newscss[$k]['tag'] = $style[0];
-                $newscss[$k]['style'] = $style[1];
+                $newscss[$k]['style'] = trim($style[1], '}');
                 $smarty->assign(str_replace(array(' ','=','"'), '', $newscss[$k]['tag']) .'css', $newscss[$k]['style']);
             }
         }
