@@ -49,8 +49,6 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         $newsletter['outro'] = Jojo::relative2absolute($newsletter['outro'], _SITEURL);
         // convert lists into table-based layout with manual bullets and p tags for Outlook if option is enabled
         // add inline styling to tags based on option css settings
-        $newsletter['intro'] = $newsletter['intro'] ? Jojo::inlineStyle($newsletter['intro'], $css, $tablelists) : '';
-        $newsletter['outro'] = $newsletter['outro'] ? Jojo::inlineStyle($newsletter['outro'], $css, $tablelists) : '';
 
         // convert text encoding to utf-8 for consistent foreign character display
         $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
@@ -89,7 +87,9 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         $result['subject']  = $newsletter['name'];
         $result['date']  = $newsletter['date'];
         $result['template'] = $templateid;
-        $result['content']  = $smarty->fetch('jojo_newsletter_content.tpl');
+        $content = $smarty->fetch('jojo_newsletter_content.tpl');
+        $result['content']  =  $css ? Jojo::inlineStyle($content, $css, $tablelists) : $content;
+        $result['content'] = mb_convert_encoding($result['content'], 'HTML-ENTITIES', 'UTF-8');
         $result['sender'] = ($newsletter['sender']) ? $newsletter['sender'] : Jojo::getOption('phplist_fromaddress');
 
         /* Get the list id's this is going to */
