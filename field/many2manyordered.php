@@ -58,11 +58,20 @@ class Jojo_Field_many2manyordered extends Jojo_Field
 
         $tablename = $this->cattable;
         $tableoptions = Jojo::selectRow("SELECT * FROM {tabledata} WHERE td_name = ?", $tablename);
+        $pages = false;
 
         $idfield        = $tableoptions['td_primarykey'];
         $displayfield   = Jojo::either($tableoptions['td_displayfield'], $tableoptions['td_primarykey']);
-        $parentfield    = Jojo::either($tableoptions['td_parentfield'], $tableoptions['td_group1'], "'0'");
+        $parentfield    = Jojo::either($tableoptions['td_parentfield'], $tableoptions['td_group1'], false);
         $categorytable  = $tableoptions['td_categorytable'];
+        if ($categorytable) {
+            $categorytableoptions  = Jojo::selectRow("SELECT * FROM {tabledata} WHERE td_name = ?", $categorytable);
+            $categoryidfield       = $categorytableoptions['td_primarykey'];
+            $categorydisplayfield   = Jojo::either($categorytableoptions['td_displayfield'], $categorytableoptions['td_primarykey']);
+            if ($categorydisplayfield=='pageid') {
+                $pages = Jojo::selectAssoc("SELECT p.pageid AS id, p.pg_title FROM {page} p");
+            }
+        }
         $categoryfield  = Jojo::either($tableoptions['td_categoryfield'], $tableoptions['td_group1'], "'0'");
         $orderbyfield   = $tableoptions['td_orderbyfields'];
         $group1field    = $tableoptions['td_group1'];
@@ -77,9 +86,11 @@ class Jojo_Field_many2manyordered extends Jojo_Field
             $layer1 = Jojo::selectQuery("SELECT ".$tableoptions['td_group1']." FROM {".$tableoptions['td_name']."} GROUP BY ".$tableoptions['td_group1']." ORDER BY ".$tableoptions['td_group1']."");
         }
         /* Main query */
-        $query = "SELECT $idfield AS id, $displayfield AS display, $parentfield AS parent, $categoryfield AS categoryfield, $rolloverfield AS rollover ". Jojo::onlyIf($group1field,",".$group1field." AS group1").
-                    ' FROM {'.$tableoptions['td_name']."}
-                    WHERE $datafilter ".
+        $query = "SELECT t.$idfield AS id, t.$displayfield AS display, " . ($parentfield ? "t.$parentfield AS parent, " : '') . "t.$categoryfield AS categoryfield, t.$rolloverfield AS rollover". Jojo::onlyIf($group1field,",".$group1field." AS group1");
+        $query .= $categorytable ? ', cat.' . $categorydisplayfield . ' AS catdisplay' : '';
+        $query .= ' FROM {'.$tableoptions['td_name'].'} AS t';
+        $query .= $categorytable ? ' LEFT JOIN {' . $categorytable . '} AS cat ON (t.' . $categoryfield . '=cat.' . $categoryidfield . ')' : '';
+        $query .= " WHERE $datafilter ".
                     ' ORDER BY '. Jojo::onlyIf($group1field,' '.$group1field.', ').
                      Jojo::onlyIf($orderbyfield,' '.$orderbyfield.', ').
                      Jojo::onlyIf($displayfield,' '.$displayfield.', ').
@@ -87,9 +98,10 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         $records = Jojo::selectQuery($query);
 
         foreach ($records as $i=>$record) {
-            $options[$i]['name']        = $record['display'];
+            $catdisplay = $categorytable && $pages ? $pages[$record['catdisplay']] : $record['catdisplay'];
+            $options[$i]['name']        = $record['display'] . ' <a href="/admin/edit/' . $tablename . '/' . $record['id'] . '" target="_blank"><span class="glyphicon glyphicon-edit"></span></a>'. ($categorytable ? ' <span class="note">[' . $catdisplay . ']</span>': '');
             $options[$i]['value']       = $record['id'];
-            $options[$i]['parent']      = $record['parent'];
+            $options[$i]['parent']      = isset($record['parent']) ? $record['parent'] : 0;
             $this->options[$i]['group'] = isset($record['group1']) ? $record['group1'] : '';
         }
 
@@ -101,11 +113,13 @@ class Jojo_Field_many2manyordered extends Jojo_Field
         foreach ($options as $o) {
             $isselected = isset($selections[$o['value']]) ? ' checked="checked"' : '';
             $position   = isset($selections[$o['value']]) ? $selections[$o['value']] : '';
-            $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="3" style="width:35px;display:inline-block;" />&nbsp;<label class="checkbox inline"><input type="checkbox" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
+            $item = '<input type="text" name="fm_' . $this->fd_field . '_' . $o['value'] . '_order" value="' . $position . '" size="2" class="form-control" />&nbsp;<label class="checkbox inline"><input type="checkbox" name="fm_' . $this->fd_field . "_" . $o['value']."\" id=\"fm_".$this->fd_field."_".$o['value']."\" value=\"".$o['value']."\" onchange=\"fullsave = true;\"".$isselected."> ".$o['name']."</label><br />\n";
             $tree->addNode($o['value'], $o['parent'], $item);
         }
-        $output = '<ul class="unstyled"><li><span style="width:35px;">Position</span></li></ul>';
+        $output = '<div class="form-inline">
+                        <ul class="unstyled-list"><li><span style="width:35px;">Position</span></li></ul>';
         $output .= $tree->printout_plain();
+        $output .= '</div>';
 
         return $output;
     }

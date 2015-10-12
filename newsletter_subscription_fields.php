@@ -34,14 +34,14 @@ $from_name_fields = array('firstname',' ','lastname'); //this is an array of all
 $f=0;
 
 $fields[$f]['field'] = 'firstname';
-$fields[$f]['display'] = 'Given Name(s)';
+$fields[$f]['display'] = 'First Name';
 $fields[$f]['required'] = true;
 $fields[$f]['validation'] = '';
 $fields[$f]['type'] = 'text';
 
 ++$f;
 $fields[$f]['field'] = 'lastname';
-$fields[$f]['display'] = 'Family Name(s)';
+$fields[$f]['display'] = 'Last Name';
 $fields[$f]['required'] = true;
 $fields[$f]['validation'] = '';
 $fields[$f]['type'] = 'text';

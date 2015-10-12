@@ -44,18 +44,6 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
             }
         }
         $smarty->assign('htmlintro', true);
-        // convert any relative urls to absolute
-        $newsletter['intro'] = Jojo::relative2absolute($newsletter['intro'], _SITEURL);
-        $newsletter['outro'] = Jojo::relative2absolute($newsletter['outro'], _SITEURL);
-        // convert lists into table-based layout with manual bullets and p tags for Outlook if option is enabled
-        // add inline styling to tags based on option css settings
-
-        // convert text encoding to utf-8 for consistent foreign character display
-        $newsletter['intro'] = mb_convert_encoding($newsletter['intro'], 'HTML-ENTITIES', 'UTF-8');
-        $newsletter['outro'] = mb_convert_encoding($newsletter['outro'], 'HTML-ENTITIES', 'UTF-8');
-        // convert htmlentities to unicode for more consistent display
-        $newsletter['intro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['intro']); 
-        $newsletter['outro'] = preg_replace('~^(&([a-zA-Z0-9]);)~',htmlentities('${1}'),$newsletter['outro']); 
 
         $smarty->assign('newsletter', $newsletter);
         $smarty->assign('online', $online);
@@ -88,7 +76,12 @@ class Jojo_Plugin_Jojo_Newsletter extends Jojo_Plugin
         $result['date']  = $newsletter['date'];
         $result['template'] = $templateid;
         $content = $smarty->fetch('jojo_newsletter_content.tpl');
+        // add inline styling to tags based on option css settings
+        // convert lists into table-based layout with manual bullets and p tags for Outlook if option is enabled
         $result['content']  =  $css ? Jojo::inlineStyle($content, $css, $tablelists) : $content;
+        // convert any relative urls to absolute
+        $result['content'] = Jojo::relative2absolute($result['content'], _SITEURL);
+         // re-encode htmlentites as utf-8
         $result['content'] = mb_convert_encoding($result['content'], 'HTML-ENTITIES', 'UTF-8');
         $result['sender'] = ($newsletter['sender']) ? $newsletter['sender'] : Jojo::getOption('phplist_fromaddress');
 

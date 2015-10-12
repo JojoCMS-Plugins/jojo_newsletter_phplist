@@ -113,6 +113,7 @@ class Jojo_Plugin_Jojo_Newsletter_Subscribe extends JOJO_Plugin
 
         /* Check if the subscriber is an existing user */
         $existing_user_lists = Jojo::selectAssoc('SELECT listid as lid, listid FROM {phplist_listuser} WHERE userid = ?', $userid);
+        $blacklisted_user = false;
         foreach ($listids as $listid) {
             if(!count($existing_user_lists) || !isset($existing_user_lists[$listid])) {
                 jojo::insertQuery("INSERT INTO {phplist_listuser} SET
@@ -121,14 +122,14 @@ class Jojo_Plugin_Jojo_Newsletter_Subscribe extends JOJO_Plugin
                         entered 	= '" . $date_today . "'",
                         array($userid, $listid) /* Place the id of your list here  */
                     );
-            } else { /* check if the subscriber was blacklisted and remove from blacklist if blacklisted.*/
+            } else { /* check if the subscriber was blacklisted.*/
                 $blacklisted_user = Jojo::selectRow('SELECT blacklisted FROM {newslettersuser} WHERE id = ?', $userid);
                 if($blacklisted_user['blacklisted'] == 1) {
-                    Jojo::updateQuery('UPDATE {newslettersuser} SET blacklisted = 0 WHERE id = ?', $userid);
-                    $smarty->assign('message', 'You are now subscribed to the ' . Jojo::getOption('sitetitle') . ' Newsletter.');
+                    $smarty->assign('message', 'You were already subscribed to the ' . Jojo::getOption('sitetitle') . ' Newsletter but this address has been blacklisted.');
                 }else{
                     $smarty->assign('message', 'You were already subscribed to the ' . Jojo::getOption('sitetitle') . ' Newsletter.');
                 }
+                return false;
             }
         }
 

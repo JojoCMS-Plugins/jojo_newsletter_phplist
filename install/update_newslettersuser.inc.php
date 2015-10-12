@@ -19,7 +19,7 @@ $default_td['newslettersuser'] = array(
         'td_primarykey' => "id",
         'td_displayfield' => "email",
         'td_deleteoption' => "yes",
-        'td_menutype' => "list",
+        'td_menutype' => "searchabletree",
         'td_help' => "Newsletter subscribers are managed from here.  The system will comfortably take many hundreds of subscribers.",
         'td_defaultpermissions' => "everyone.show=0\neveryone.view=0\neveryone.edit=0\neveryone.add=0\neveryone.delete=0\nadmin.show=1\nadmin.view=1\nadmin.edit=1\nadmin.add=1\nadmin.delete=1\nnotloggedin.show=0\nnotloggedin.view=0\nnotloggedin.edit=0\nnotloggedin.add=0\nnotloggedin.delete=0\nregistered.show=1\nregistered.view=1\nregistered.edit=1\nregistered.add=1\nregistered.delete=1\nsysinstall.show=0\nsysinstall.view=0\nsysinstall.edit=0\nsysinstall.add=0\nsysinstall.delete=0\n",
     );

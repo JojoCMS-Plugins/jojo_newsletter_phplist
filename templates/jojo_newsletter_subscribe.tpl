@@ -2,7 +2,7 @@
 {/if}
 {if $content}{$content}
 {/if}
-<form name="contactform" method="post" action="{$posturl}" class="contact-form no-ajax">
+<form id="subcriptionform" name="contactform" method="post" action="{$posturl}" class="contact-form no-ajax">
     {foreach from=$fields key=k item=f }{assign var=x value=`$k-1`}
     {if $f.fieldset!='' && $f.fieldset!=$fields[$x].fieldset}<fieldset>
         <legend>{$f.fieldset}</legend>
@@ -18,7 +18,7 @@
                 {foreach from=$f.options key=k item=so}<option value="{$k}"{if $f.value == $so} selected="selected"{/if}>{$so}</option>
                 {/foreach}
             </select>
-            {else}<input type="{$f.type}" class="{$f.type} form-control" {if $f.size}size="{$f.size}"{/if} name="form_{$f.field}" id="form_{$f.field}" value="{if $f.value}{$f.value}{/if}" />
+            {else}<input type="{$f.type}" class="{$f.type} form-control{if $f.required && $f.type!='hidden'} required{/if}{if $f.validation} {$f.validation}{/if}" {if $f.size}size="{$f.size}"{/if} name="form_{$f.field}" id="form_{$f.field}" value="{if $f.value}{$f.value}{/if}" />
             {/if}
             {if $f.description}<div class="form-field-description">{$f.description}</div>{/if}
         </div>
