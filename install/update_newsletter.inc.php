@@ -25,13 +25,30 @@ $default_td['newsletter'] = array(
         'td_defaultpermissions' => "everyone.show=1\neveryone.view=1\neveryone.edit=1\neveryone.add=1\neveryone.delete=1\nadmin.show=1\nadmin.view=1\nadmin.edit=1\nadmin.add=1\nadmin.delete=1\nnotloggedin.show=0\nnotloggedin.view=0\nnotloggedin.edit=0\nnotloggedin.add=0\nnotloggedin.delete=0\nregistered.show=1\nregistered.view=1\nregistered.edit=1\nregistered.add=1\nregistered.delete=1\nsysinstall.show=1\nsysinstall.view=1\nsysinstall.edit=1\nsysinstall.add=1\nsysinstall.delete=1\n",
     );
 
+$o=0;
+
 $default_fd['newsletter']['id'] = array(
         'fd_name' => "ID",
         'fd_type' => "readonly",
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
-        'fd_order' => "1",
+        'fd_order' => $o++,
+        'fd_tabname' => "1. Newsletter",
+    );
+
+$defaulttemplate = Jojo::selectRow("SELECT id FROM {phplist_template}");
+$defaulttemplate = isset($defaulttemplate['id']) ? $defaulttemplate['id'] : 1;
+// Template
+$default_fd['newsletter']['template'] = array(
+        'fd_name' => "Template",
+        'fd_type' => "dblist",
+        'fd_options' => "phplist_template",
+        'fd_default' => $defaulttemplate,
+        'fd_size' => "0",
+        'fd_rows' => "0",
+        'fd_cols' => "0",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -41,7 +58,7 @@ $default_fd['newsletter']['name'] = array(
         'fd_size' => "0",
         'fd_rows' => "0",
         'fd_cols' => "0",
-        'fd_order' => "2",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -50,7 +67,7 @@ $default_fd['newsletter']['issue_number'] = array(
         'fd_type' => "integer",
         'fd_required' => "yes",
         'fd_help' => "The Issue Number of the Newsletter",
-        'fd_order' => "3",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -60,7 +77,7 @@ $default_fd['newsletter']['intro'] = array(
         'fd_size' => "0",
         'fd_rows' => "6",
         'fd_cols' => "40",
-        'fd_order' => "3",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -70,7 +87,7 @@ $default_fd['newsletter']['outro'] = array(
         'fd_size' => "0",
         'fd_rows' => "6",
         'fd_cols' => "40",
-        'fd_order' => "3",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -79,7 +96,7 @@ $default_fd['newsletter']['intro_code'] = array(
         'fd_name' => "Intro",
         'fd_type' => "texteditor",
         'fd_options' => "intro",
-        'fd_order' => "10",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -88,26 +105,16 @@ $default_fd['newsletter']['outro_code'] = array(
         'fd_name' => "Outro",
         'fd_type' => "texteditor",
         'fd_options' => "outro",
-        'fd_order' => "11",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
-
-$default_fd['newsletter']['template'] = array(
-        'fd_name' => "Template",
-        'fd_type' => "dblist",
-        'fd_options' => "phplist_template",
-        'fd_size' => "0",
-        'fd_rows' => "0",
-        'fd_cols' => "0",
-        'fd_order' => "4",
-        'fd_tabname' => "1. Newsletter",
-    );
+    
 
 $default_fd['newsletter']['date'] = array(
         'fd_name' => "Date",
         'fd_type' => "unixdate",
         'fd_help' => "The Date the Newsletter Was Made",
-        'fd_order' => "4",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
@@ -118,7 +125,7 @@ $default_fd['newsletter']['header_image'] = array(
         'fd_options' => "bannerimage",
         'fd_required' => "no",
         'fd_help' => "Image on the Newsletter Header.",
-        'fd_order' => "7",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 }
@@ -129,7 +136,7 @@ $default_fd['newsletter']['link'] = array(
         'fd_options' => "yes\nno",
         'fd_default' => "yes",
         'fd_help' => "Truncate the article in the email and provide a link to the full article on the site",
-        'fd_order' => "8",
+        'fd_order' => $o++,
         'fd_tabname' => "1. Newsletter",
     );
 
