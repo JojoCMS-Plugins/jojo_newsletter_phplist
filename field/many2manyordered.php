@@ -86,7 +86,7 @@ class Jojo_Field_many2manyordered extends Jojo_Field
             $layer1 = Jojo::selectQuery("SELECT ".$tableoptions['td_group1']." FROM {".$tableoptions['td_name']."} GROUP BY ".$tableoptions['td_group1']." ORDER BY ".$tableoptions['td_group1']."");
         }
         /* Main query */
-        $query = "SELECT t.$idfield AS id, t.$displayfield AS display, " . ($parentfield ? "t.$parentfield AS parent, " : '') . "t.$categoryfield AS categoryfield, t.$rolloverfield AS rollover". Jojo::onlyIf($group1field,",".$group1field." AS group1");
+        $query = "SELECT t.$idfield AS id, t.$displayfield AS display, " . ($parentfield ? "t.$parentfield AS parent, " : '') . "t.$categoryfield AS categoryfield" . ($rolloverfield ? ", t.$rolloverfield AS rollover " : '') . Jojo::onlyIf($group1field,",".$group1field." AS group1");
         $query .= $categorytable ? ', cat.' . $categorydisplayfield . ' AS catdisplay' : '';
         $query .= ' FROM {'.$tableoptions['td_name'].'} AS t';
         $query .= $categorytable ? ' LEFT JOIN {' . $categorytable . '} AS cat ON (t.' . $categoryfield . '=cat.' . $categoryidfield . ')' : '';
